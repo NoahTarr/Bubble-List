@@ -1,0 +1,30 @@
+/**************
+Bubble List Style
+***************/
+/***Variables***/
+//Base bubble
+$bubbleSize: 200px;
+$selectedBubbleSize: 500px;
+$distanceFromCenter: 150px; //Center of list to center of item
+$borderSize: 1px;
+$backgroundImageOpacityBase: 100%;
+
+//Hovered bubble
+$bannerWhenHovered: true;
+$backgroundImageOpacityHovered: 100%;
+
+
+//Selected bubble
+$bannerWhenSelected: true;
+
+//Banner
+$bannerBackgroundColor: #000;
+$bannerHeight: 50px;
+$bannerWidth: 100px; //Set to a number greater then the diameter of the bubble to have banner cutoff at ends
+$bannerTitleFont: initial;
+$bannerTitleFontSize: 30pt;
+
+.bubbleList {
+  padding-left: 0;
+  list-style: none;
+}
