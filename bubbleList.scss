@@ -3,10 +3,12 @@ Bubble List Style
 ***************/
 /***Variables***/
 //Base bubble
-$bubbleSize: 200px;
-$selectedBubbleSize: 500px;
-$distanceFromCenter: 150px; //Center of list to center of item
-$borderSize: 1px;
+$baseBubbleDiameter: 100px;
+$selectedBubbleDiameter: 500px;
+//Set the radius in the js file
+$baseBorderWidth: 2px;
+$borderStyle: solid;
+$borderColor: #000000;
 $backgroundImageOpacityBase: 100%;
 
 //Hovered bubble
@@ -24,7 +26,44 @@ $bannerWidth: 100px; //Set to a number greater then the diameter of the bubble t
 $bannerTitleFont: initial;
 $bannerTitleFontSize: 30pt;
 
+//Header
+$headerBackgroundColor: #000;
+$headerHeight: 50px;
+$headerWidth: 100px; //Set to a number greater then the diameter of the bubble to have banner cutoff at ends
+$headerTitleFont: initial;
+$headerTitleFontSize: 30pt;
+
+//Footer
+$footerBackgroundColor: #000;
+$footerHeight: 50px;
+$footerWidth: 100px; //Set to a number greater then the diameter of the bubble to have banner cutoff at ends
+$footerFont: initial;
+$footerFontSize: 30pt;
+
 .bubbleList {
   padding-left: 0;
   list-style: none;
+}
+
+.bubble{
+  position: absolute;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  width: $baseBubbleDiameter;
+  height: $baseBubbleDiameter;
+  -webkit-border-radius: 10000px;
+  -moz-border-radius: 10000px;
+  border-radius: 10000px;
+  border: $baseBorderWidth $borderStyle $borderColor;
+  -webkit-animation-timing-function: ease-in-out;
+  -moz-animation-timing-function: ease-in-out;
+  -o-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+  margin: auto;
+}
+
+.bubbleContents {
+  position: absolute;
+  margin: auto;
 }
