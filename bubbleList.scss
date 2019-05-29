@@ -6,40 +6,58 @@ Bubble List Style
 //Base bubble
 $baseBubbleDiameter: 100px;
 $selectedBubbleDiameter: 300px;
-$baseBorderWidth: 2px;
+$borderWidth: 1px;
 $borderStyle: solid;
 $borderColor: #000000;
 $backgroundImageOpacityBase: .6;
 $backgroundColor: #ffffff;
 
+//Empty bubble
+$emptyBubbleFontSize: 14pt;
+
 //Hovered bubble
-$bannerWhenHovered: true;
 $backgroundImageOpacityHovered: 1;
 
-//Selected bubble
-$bannerWhenSelected: true;
+//Active bubble
+$activeHeight: 500px;
+$activeWidth: 500px;
+$activeBackgroundColor: #ffffff;
+$activeBorderWidth: 1px;
+$activeBorderStyle: solid;
+$activeBorderColor: #000000;
 
 //Banner
+$banner: true;
 $bannerBackgroundColor: #000000;
-$bannerFontColor: #ffffff;
-$bannerFontSize: 20pt;
 $bannerHeight: 33pt;
+$headerWidth: 100px; //Set to a number greater then the diameter of the bubble to have banner cutoff at ends
 $bannerTitleFont: "Caviar Dreams";
-$bannerTitleFontSize: 30pt;
+$bannerFontSize: 20pt;
+$bannerFontColor: #ffffff;
 
 //Header
+$header: true;
 $headerBackgroundColor: #000000;
 $headerHeight: 50px;
-$headerWidth: 100px; //Set to a number greater then the diameter of the bubble to have banner cutoff at ends
-$headerTitleFont: initial;
-$headerTitleFontSize: 30pt;
+$headerWidth: 100%; //Set to a number greater then the diameter of the bubble to have banner cutoff at ends
+$headerFont: "Caviar Dreams";
+$headerFontSize: 13pt;
+$headerFontColor: #ffffff;
+
+//Description
+$descriptionFont: "Roboto";
+$descriptionFontSize: 10pt;
+$descriptionFontColor: #000000;
 
 //Footer
+$footer: true;
 $footerBackgroundColor: #000000;
-$footerHeight: 50px;
-$footerWidth: 100px; //Set to a number greater then the diameter of the bubble to have banner cutoff at ends
-$footerFont: initial;
-$footerFontSize: 30pt;
+$footerHeight: 30px;
+$footerWidth: 100%; //Set to a number greater then the diameter of the bubble to have banner cutoff at ends
+$footerFont: "Caviar Dreams";;
+$footerFontSize: 11pt;
+$footerFontColor: #ffffff;
+
 
 .bubbleList {
   display: flex;
@@ -58,6 +76,10 @@ $footerFontSize: 30pt;
   border-radius: 10000px;
 }
 
+.bubbleContainer:hover {
+  z-index: 1;
+}
+
 .bubble{
   position: absolute;
   margin-top: -.5 * $baseBubbleDiameter;
@@ -68,23 +90,20 @@ $footerFontSize: 30pt;
   width: 100%;
   height: 100%;
   background-color: $backgroundColor;
-  background-size: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat:no-repeat;
   opacity: $backgroundImageOpacityBase;
-  -webkit-border-radius: 10000px;
-  -moz-border-radius: 10000px;
-  border-radius: 10000px;
-  border: $baseBorderWidth $borderStyle $borderColor;
-  -webkit-transition:  ease-in-out .1s, transform 0s, margin-bottom 0s;
-  -moz-transition: ease-in-out .1s, transform 0s, margin-bottom 0s;
-  -ms-transition: ease-in-out .1s, transform 0s, margin-bottom 0s;
-  -o-transition: ease-in-out .1s, transform 0s, margin-bottom 0s;
-  transition: ease-in-out .1s, transform 0s, margin-bottom 0s;
-  //transition-property: width, height, margin-top, margin-left, opacity, border, position, ;
-}
-
-.bubbleContainer:hover {
-  z-index: 10000;
-  border: none;
+  overflow: hidden;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  border: $borderWidth $borderStyle $borderColor;
+  -webkit-transition:  ease-in-out .1s, transform 0s;
+  -moz-transition: ease-in-out .1s, transform 0s;
+  -ms-transition: ease-in-out .1s, transform 0s;
+  -o-transition: ease-in-out .1s, transform 0s;
+  transition: ease-in-out .1s, transform 0s;
 }
 
 .bubble:hover {
@@ -93,19 +112,35 @@ $footerFontSize: 30pt;
   margin-top: -.5 * $selectedBubbleDiameter;
   margin-left: -.5 * $selectedBubbleDiameter;
   opacity: $backgroundImageOpacityHovered;
-  border: $baseBorderWidth $borderStyle $borderColor;
+  border: $borderWidth $borderStyle $borderColor;
   cursor: pointer;
-  -webkit-transition:  ease-in-out .1s, transform 0s, margin-bottom 0s;
-  -moz-transition: ease-in-out .1s, transform 0s, margin-bottom 0s;
-  -ms-transition: ease-in-out .1s, transform 0s, margin-bottom 0s;
-  -o-transition: ease-in-out .1s, transform 0s, margin-bottom 0s;
-  transition: ease-in-out .1s, transform 0s, margin-bottom 0s;
-  //transition-property: width, height, margin-top, margin-left, opacity, border;
+  -webkit-transition:  ease-in-out .2s;
+  -moz-transition: ease-in-out .2s, transform 0s, margin 0s;
+  -ms-transition: ease-in-out .2s, transform 0s, margin 0s;
+  -o-transition: ease-in-out .2s, transform 0s, margin 0s;
+  transition: ease-in-out .2s, transform 0s, margin 0s;
+  transition-property: width, height, margin-top, margin-left, opacity, border;
 
   .bubbleBanner {
-    display: initial;
-    transition: all ease-in-out 0s !important;
+    @if $banner == true {
+      display: initial;
+    }
+    margin-top: ($selectedBubbleDiameter * .5) - ($bannerHeight * .5);
+    height: $bannerHeight;
   }
+}
+
+.emptyBubble:hover {
+  width: 100% !important;
+  height: 100% !important;
+  margin-top: -.5 * $baseBubbleDiameter !important;
+  margin-left: -.5 * $baseBubbleDiameter !important;
+  cursor: default !important;
+  -webkit-transition: all ease-in-out 0s !important;
+  -moz-transition: all ease-in-out 0s !important;
+  -ms-transition: all ease-in-out 0s !important;
+  -o-transition: all ease-in-out 0s !important;
+  transition: all ease-in-out 0s !important;
 }
 
 //********************
@@ -120,31 +155,135 @@ $footerFontSize: 30pt;
 }
 
 .bubbleBackgroundText {
-  display: none;
+  display: flex;
+  justify-content: space-around;
+
+  p {
+    height: auto;
+    text-align: center;
+    font-family: $bannerTitleFont;
+    font-size: $emptyBubbleFontSize;
+  }
 }
 
 .bubbleBanner {
   display: none;
-  margin-top: ($selectedBubbleDiameter * .5) - ($bannerHeight * .5);
-  width: 102%;
-  height: $bannerHeight;
+  width: 100%;
   line-height: $bannerHeight;
   font-size: $bannerFontSize;
   font-family: $bannerTitleFont, sans-serif;
   background-color: $bannerBackgroundColor;
   color: $bannerFontColor;
   text-align: center;
-  transition: all ease-in-out 0s !important;
+  white-space: nowrap;
 }
 
 .bubbleHeader {
   display: none;
+  flex-flow: wrap-reverse;
+  justify-content: center;
+  text-align: center;
+  background-color: $headerBackgroundColor;
+  height: $headerHeight;
+  width: $headerWidth;
+  font-family: $headerFont;
+  font-size: $headerFontSize;
+  color: $headerFontColor;
+
+  p {
+    margin-bottom: 5px;
+    height: $headerFontSize;
+  }
+}
+
+.bubbleDescription {
+  display: none;
+  justify-content: center;
+  width: 100%;
+  font-family: $descriptionFont;
+  font-size: $descriptionFontSize;
+  color: $descriptionFontColor;
+
+  p {
+    width: $selectedBubbleDiameter - ($selectedBubbleDiameter*.35);
+  }
 }
 
 .bubbleFooter {
   display: none;
+  flex-flow: wrap;
+  justify-content: center;
+  text-align: center;
+  background-color: $footerBackgroundColor;
+  height: $footerHeight;
+  width: $footerWidth;
+  font-family: $footerFont;
+  font-size: $footerFontSize;
+  color: $footerFontColor;
+
+  p {
+    margin-top: 1px;
+    height: $footerFontSize;
+  }
 }
 
-.bubbleText {
-  display: none;
+
+//********************
+//*Bubble
+//********************
+.activeBubble {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  position: fixed;
+  //top: 50%;
+  //left: 50%;
+  width: $selectedBubbleDiameter;
+  height: $selectedBubbleDiameter;
+  margin-top: -.5 * $selectedBubbleDiameter;
+  margin-left: -.5 * $selectedBubbleDiameter;
+  background-color: $activeBackgroundColor;
+  z-index: 3;
+  overflow: hidden;
+  border: $borderWidth $borderStyle $borderColor;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+
+  .bubbleHeader {
+    @if $header == true {
+      display: flex;
+    }
+  }
+
+  .bubbleDescription {
+    display: flex;
+  }
+
+  .bubbleFooter {
+    @if $footer == true {
+      display: flex;
+    }
+  }
+}
+
+.activeBubbleCover {
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  //left: 50%;
+  //top: 50%;
+  //margin-top: (-$activeHeight + 50px) * .5;
+  //margin-left: (-$activeWidth + 50px) * .5;
+  //width: $activeWidth - 50px;
+  //height: $activeHeight - 50px;
+  //background-color:#000;
+  //opacity: .6;
+  //filter: blur(200px);
+  //-webkit-border-radius: 50%;
+  //-moz-border-radius: 50%;
+  //border-radius: 50%;
 }
