@@ -1,5 +1,10 @@
 const $bubble = $('.bubble');
-const angle = 360/$bubble.length;
+const $bubbleList = $('.bubbleList');
+let listAngles = [];
+
+$bubbleList.each(function(){
+    listAngles.push(360/$(this).children().length)
+});
 
 $('body').append('<style/>');
 const style = $('style');
@@ -10,22 +15,26 @@ const hoveredDiameter = parseInt(style.css("bottom"));
 style.remove();
 
 
+let bubbleListIndex = 0;
+$bubbleList.each(function(){
+    let bubbleIndex = 0;
+    $(this).children('.bubbleContainer').each(function() {
+        $(this).css('transform', 'rotate(' + listAngles[bubbleListIndex]*bubbleIndex + 'deg)' + 'translate(' + radius + 'px)');
+        $(this).children('.bubble').css('transform', 'rotate(' + -listAngles[bubbleListIndex]*bubbleIndex + 'deg)');
+        let backgroundImage = $(this).find('.bubbleBackgroundImage').attr('src');
+        if (backgroundImage != null)
+            $(this).children('.bubble').css('background-image', 'url("' + backgroundImage + '")');
 
-let bubbleIndex = 0;
-$('.bubbleList').children('.bubbleContainer').each(function() {
-    $(this).css('transform', 'rotate(' + angle*bubbleIndex + 'deg)' + 'translate(' + radius + 'px)');
-    $(this).children('.bubble').css('transform', 'rotate(' + -angle*bubbleIndex + 'deg)');
-    let backgroundImage = $(this).find('.bubbleBackgroundImage').attr('src');
-    if (backgroundImage != null)
-        $(this).children('.bubble').css('background-image', 'url("' + backgroundImage + '")');
-
-    //Grab background color and ensure
-    let backgroundColor = $(this).find('.bubbleBackgroundColor').text();
-    const hexColorRegExp = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)|([0-9A-F]{6}$)|([0-9A-F]{3}$)/;
-    if (backgroundColor != null && hexColorRegExp.test(backgroundColor))
-        $(this).children('.bubble').css('background-color', backgroundColor);
-    bubbleIndex++;
+        //Grab background color and ensure
+        let backgroundColor = $(this).find('.bubbleBackgroundColor').text();
+        const hexColorRegExp = /(^#[0-9A-F]{6}$)|(^#[0-9A-F]{3}$)|([0-9A-F]{6}$)|([0-9A-F]{3}$)/;
+        if (backgroundColor != null && hexColorRegExp.test(backgroundColor))
+            $(this).children('.bubble').css('background-color', backgroundColor);
+        bubbleIndex++;
+    });
+    bubbleListIndex++;
 });
+
 
 
 
