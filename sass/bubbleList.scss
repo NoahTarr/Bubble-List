@@ -1,0 +1,358 @@
+@import 'math.scss';
+
+
+/**************
+Variables
+***************/
+//Set the distance of bubbles from center(Radial Coordinate) in the js file
+
+//******You can change these to your liking
+//Polar Coordinate Radial Component
+//This is the distance from the center of the list to the center of each bubble
+$radius: 200px;
+
+//Base bubble
+$baseDiameter: 100px;
+$borderWidth: 1px;
+$borderStyle: solid;
+$borderColor: #000000;
+$baseOpacity: .6;
+$backgroundColor: #ffffff;
+
+//Hovered bubble
+$hoveredDiameter: 300px;
+$backgroundImageOpacityHovered: 1;
+
+//Active bubble
+$activeDiameter: 350px;
+$activeBackgroundColor: #ffffff;
+$activeBorderWidth: 1px;
+$activeBorderStyle: solid;
+$activeBorderColor: #000000;
+
+//Active bubble attributes
+$activeBubbleShadow: false;
+$activeBubbleNoClick : true;
+
+
+
+//******DO NOT CHANGE THESE WITHOUT UNDERSTANDING WHAT YOU'RE DOING
+//These values are the lengths and sizes for a square superimposed inside the active bubble.
+//They are needed so the elements inside the active bubbles all fit properly.
+$centerSquareSideLength: $activeDiameter * cos(45deg);
+$distanceFromSquareToDiameter: ($activeDiameter/2) - ($centerSquareSideLength/2);
+
+
+
+//******You can change these to your liking
+//Banner
+$banner: true;
+$bannerBackgroundColor: #000000;
+$bannerHeight: 40px;
+$headerWidth: 100px; //Set to a number greater then the diameter of the bubble to have banner cutoff at ends
+$bannerTitleFont: "Caviar Dreams";
+$bannerFontSize: 20pt;
+$bannerFontColor: #ffffff;
+
+//Header
+$header: true;
+$headerBackgroundColor: #000000;
+$headerHeight: $distanceFromSquareToDiameter;
+$headerWidth: 100%; //Set to a number greater then the diameter of the bubble to have banner cutoff at ends
+$headerFont: "Caviar Dreams";
+$headerFontSize: 13pt;
+$headerFontColor: #ffffff;
+
+//Footer
+$footer: true;
+$footerBackgroundColor: #000000;
+$footerHeight: $distanceFromSquareToDiameter;
+$footerWidth: 100%; //Set to a number greater then the diameter of the bubble to have banner cutoff at ends
+$footerFont: "Caviar Dreams";;
+$footerFontSize: 13pt;
+$footerFontColor: #ffffff;
+
+//Description
+$descriptionFont: "Roboto";
+$descriptionFontSize: 11pt;
+$descriptionFontColor: #000000;
+
+//Empty bubble
+$backgroundTextFontSmall: 14pt;
+$backgroundTextFontLarge: 20pt;
+
+
+//DO NOT CHANGE THIS!!!
+//This class is used by jquery to grab variable values set in this file.
+//The styles used are random and do not signify anything.
+style {
+  top: $radius;
+  left: $baseDiameter;
+  right: $activeDiameter;
+  bottom: $hoveredDiameter;
+}
+
+/**************
+Bubble List Style
+***************/
+.bubbleList {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  padding: 0;
+  list-style: none;
+}
+
+.bubbleContainer {
+  position: absolute;
+  width: $baseDiameter;
+  height: $baseDiameter;
+}
+
+.bubbleContainer:hover, .hoveredBubbleContainer {
+  z-index: 1;
+}
+
+.bubble{
+  position: absolute;
+  margin-top: -.5 * $baseDiameter;
+  margin-left: -.5 * $baseDiameter;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-flow: column;
+  width: 100%;
+  height: 100%;
+  background-color: $backgroundColor;
+  background-size: cover;
+  background-position: center;
+  background-repeat:no-repeat;
+  opacity: $baseOpacity;
+  overflow: hidden;
+  -webkit-border-radius: 100%;
+  -moz-border-radius: 100%;
+  border-radius: 100%;
+  border: $borderWidth $borderStyle $borderColor;
+  -webkit-transition:  ease-in-out .1s, transform 0s;
+  -moz-transition: ease-in-out .1s, transform 0s;
+  -ms-transition: ease-in-out .1s, transform 0s;
+  -o-transition: ease-in-out .1s, transform 0s;
+  transition: ease-in-out .1s, transform 0s;
+}
+
+.bubble:hover, .hoveredBubble {
+  width: $hoveredDiameter;
+  height: $hoveredDiameter;
+  margin-top: -.5 * $hoveredDiameter;
+  margin-left: -.5 * $hoveredDiameter;
+  opacity: $backgroundImageOpacityHovered;
+  border: $borderWidth $borderStyle $borderColor;
+  cursor: pointer;
+  -webkit-transition:  ease-in-out .2s, transform 0s;
+  -moz-transition: ease-in-out .2s, transform 0s;
+  -ms-transition: ease-in-out .2s, transform 0s;
+  -o-transition: ease-in-out .2s, transform 0s;
+  transition: ease-in-out .2s, transform 0s;
+
+  .bubbleBanner {
+    @if $banner == true {
+      display: initial;
+    }
+    height: $bannerHeight;
+  }
+
+
+  .bubbleBackgroundText p{
+    font-size: $backgroundTextFontLarge;
+  }
+}
+
+.nonHoverableBubble:hover {
+  width: 100% !important;
+  height: 100% !important;
+  margin-top: -.5 * $baseDiameter !important;
+  margin-left: -.5 * $baseDiameter !important;
+  cursor: default !important;
+  -webkit-transition: all ease-in-out 0s !important;
+  -moz-transition: all ease-in-out 0s !important;
+  -ms-transition: all ease-in-out 0s !important;
+  -o-transition: all ease-in-out 0s !important;
+  transition: all ease-in-out 0s !important;
+}
+
+//********************
+//*Bubble
+//********************
+.selectedBubbleContainer {
+  position: relative;
+}
+
+.bubbleBackgroundImage {
+  display: none;
+}
+
+.bubbleBackgroundText {
+  display: flex;
+  justify-content: space-around;
+
+  p {
+    text-align: center;
+    font-family: $bannerTitleFont;
+    font-size: $backgroundTextFontSmall;
+  }
+}
+
+.nonHoverableBubble p{
+  font-size: $backgroundTextFontSmall !important;
+}
+
+.bubbleBanner {
+  display: none;
+  position: absolute;
+  width: 100%;
+  height: 0;
+  line-height: $bannerHeight;
+  font-size: $bannerFontSize;
+  font-family: $bannerTitleFont, sans-serif;
+  background-color: $bannerBackgroundColor;
+  color: $bannerFontColor;
+  text-align: center;
+  white-space: nowrap;
+  transition: all ease-in-out .1s;
+}
+
+
+
+//********************
+//*Active Bubble
+//********************
+.activeBubble {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: space-between;
+  position: absolute;
+  width: $hoveredDiameter;
+  height: $hoveredDiameter;
+  margin-top: -.5 * $hoveredDiameter;
+  margin-left: -.5 * $hoveredDiameter;
+  background-color: $activeBackgroundColor;
+  z-index: 4;
+  overflow: hidden;
+  border: $borderWidth $borderStyle $borderColor;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+  -webkit-transition: all ease-in-out .2s, background-color 0s;
+  -moz-transition: all ease-in-out .2s, background-color 0s;
+  -ms-transition: all ease-in-out .2s, background-color 0s;
+  -o-transition: all ease-in-out .2s, background-color 0s;
+  transition: all ease-in-out .2s, background-color 0s;
+
+  .bubbleHeader {
+    @if $header == true {
+      display: flex;
+    }
+  }
+
+  .bubbleDescription {
+    display: flex;
+    position: relative;
+    width: $centerSquareSideLength;
+    height: $centerSquareSideLength;
+    margin: $distanceFromSquareToDiameter;
+  }
+
+  .bubbleFooter {
+    @if $footer == true {
+      display: flex;
+    }
+  }
+}
+
+//Drop shadow behind active bubble
+.activeBubbleShadow {
+  @if $activeBubbleShadow == false {
+    display: none;
+  }
+  position: fixed;
+  z-index: 3;
+  margin-top: (-$activeDiameter  ) * .5;
+  margin-left: (-$activeDiameter ) * .5;
+  width: $activeDiameter ;
+  height: $activeDiameter ;
+  background-color:#000;
+  opacity: .5;
+  filter: blur(250px);
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  border-radius: 50%;
+}
+
+//This is so you cannot click anything when there is an active bubble present
+.activeBubbleBackCover {
+  @if $activeBubbleNoClick == false {
+    display: none;
+  }
+  position: fixed;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+
+.bubbleHeader {
+  position: absolute;
+  display: none;
+  flex-flow: wrap-reverse;
+  justify-content: center;
+  text-align: center;
+  background-color: $headerBackgroundColor;
+  height: $headerHeight;
+  width: $headerWidth;
+  font-family: $headerFont;
+  font-size: $headerFontSize;
+  color: $headerFontColor;
+
+  p {
+    margin-bottom: 5px;
+    height: $headerFontSize;
+  }
+}
+
+.bubbleDescription {
+  display: none;
+  justify-content: center;
+  font-family: $descriptionFont;
+  font-size: $descriptionFontSize;
+  color: $descriptionFontColor;
+
+  p, a {
+    width: $hoveredDiameter - ($hoveredDiameter*.35);
+  }
+}
+
+.bubbleFooter {
+  position: absolute;
+  bottom: 0;
+  display: none;
+  flex-flow: wrap;
+  justify-content: center;
+  text-align: center;
+  background-color: $footerBackgroundColor;
+  height: $footerHeight;
+  width: $footerWidth;
+  font-family: $footerFont;
+  font-size: $footerFontSize;
+  color: $footerFontColor;
+
+  p {
+    margin-top: 1px;
+    height: $footerFontSize;
+  }
+}
+
+.bubbleBackgroundColor {
+  display: none;
+}
